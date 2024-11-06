@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Page with Event Binding and Propagation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+        .container {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+        h2 {
+            text-align: center;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            text-align: center;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="registerContainer">
+    <h2>Register</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button id="registerButton">Register</button>
+    <div class="message" id="message"></div>
+</div>
+
+<script>
+    const registerContainer = document.getElementById('registerContainer');
+    const registerButton = document.getElementById('registerButton');
+    const message = document.getElementById('message');
+
+    // Event Binding - Register button
+    registerButton.addEventListener('click', (event) => {
+        event.stopPropagation(); // Prevents event bubbling up to container
+        registerUser(event);
+    });
+
+    // Event Binding - Container click
+    registerContainer.addEventListener('click', (event) => {
+        alert("You clicked inside the container!");
+    });
+
+    // Event Capturing - Document click
+    document.addEventListener('click', (event) => {
+        console.log("Document click event in capturing phase");
+    }, true);
+
+    // Function to handle user registration
+    function registerUser(event) {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        if (username && password) {
+            localStorage.setItem(username, password); // Store in localStorage
+            message.textContent = "Registration successful!";
+            message.style.color = "green";
+        } else {
+            message.textContent = "Please fill out all fields.";
+            message.style.color = "red";
+        }
+    }
+</script>
+
+</body>
+</html>
